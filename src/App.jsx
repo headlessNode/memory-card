@@ -1,5 +1,6 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import Cards from './cards'
 
 function Header({ score, bestScore }) {
     return (
@@ -15,7 +16,88 @@ function Header({ score, bestScore }) {
 }
 
 function MainBody() {
-    return <div className="main-body"></div>
+    const [showModal, setShowModal] = useState(true)
+    const dialogRef = useRef(null)
+    let difficulty = useRef(null)
+
+    function handleClick(e) {
+        e.preventDefault()
+        switch (e.target.textContent) {
+            case 'Easy': {
+                dialogRef.current.close()
+                difficulty.current = 'Easy'
+                setShowModal(false)
+                break
+            }
+            case 'Medium': {
+                dialogRef.current.close()
+                difficulty.current = 'Medium'
+                setShowModal(false)
+                break
+            }
+            case 'Hard': {
+                dialogRef.current.close()
+                difficulty = 'Hard'
+                setShowModal(false)
+                break
+            }
+        }
+    }
+
+    useEffect(() => {
+        const dialog = dialogRef.current
+        dialog.showModal()
+        return () => {
+            if (dialog.open) {
+                dialog.close()
+            }
+        }
+    }, [])
+
+    if (showModal) {
+        return (
+            <div className="main-body">
+                <dialog ref={dialogRef}>
+                    <div>
+                        <h1>Select difficulty level</h1>
+                        <div className="links">
+                            <ul>
+                                <li>
+                                    <a href="#" onClick={handleClick}>
+                                        Easy
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onClick={handleClick}>
+                                        Medium
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onClick={handleClick}>
+                                        Hard
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="github">
+                            <a
+                                href="https://github.com/headlessNode/memory-card"
+                                target="_blank"
+                            >
+                                GITHUB
+                            </a>
+                        </div>
+                    </div>
+                </dialog>
+            </div>
+        )
+    } else {
+        return (
+            <div className="main-body">
+                <Cards difficulty={difficulty} />
+            </div>
+        )
+    }
 }
 
 function Footer() {
@@ -26,28 +108,6 @@ function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
 
-    useEffect(() => {
-        let controller = new AbortController()
-        const signal = controller.signal
-        function getCharacters() {
-            const headers = {
-                Accept: 'application/json',
-                Authorization: 'Bearer NViWbY8d7ps9VfDbwfD4',
-            }
-            fetch(' https://the-one-api.dev/v2/character', {
-                headers: headers,
-                signal: signal,
-            })
-                .then((res) => {
-                    console.log(res)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        }
-        getCharacters()
-        return () => controller.abort()
-    }, [])
     return (
         <div className="wrapper">
             <Header score={score} bestScore={bestScore} />
