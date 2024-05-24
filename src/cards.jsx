@@ -6,7 +6,6 @@ function LoadingSpinner() {
 
 export default function Cards({ difficulty }) {
     let numOfCards = useRef(0)
-    let promises = useRef([])
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -32,14 +31,15 @@ export default function Cards({ difficulty }) {
             )
         }
         if (!ignore) {
+            let promises = []
             const cardIds = new Set()
             while (cardIds.size !== numOfCards.current) {
                 cardIds.add(Math.floor(Math.random() * 100) + 1)
             }
             for (let id of cardIds) {
-                promises.current.push(getCharacters(id))
+                promises.push(getCharacters(id))
             }
-            Promise.all(promises.current)
+            Promise.all(promises)
                 .then((res) => {
                     setIsLoading(false)
                     setpokemons(res)
@@ -50,7 +50,6 @@ export default function Cards({ difficulty }) {
         }
         return () => {
             ignore = true
-            promises.current = []
         }
     }, [])
 
