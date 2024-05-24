@@ -51,7 +51,7 @@ export default function Cards({ difficulty }) {
         return () => {
             ignore = true
         }
-    }, [])
+    }, [difficulty])
 
     if (isLoading) {
         return <LoadingSpinner />
