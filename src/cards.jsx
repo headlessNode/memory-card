@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 
-// easy - 5
-// medium - 10
-// hard - 18
+function LoadingSpinner() {
+    return <p>Loading....</p>
+}
 
 export default function Cards({ difficulty }) {
     let numOfCards = useRef(0)
     let promises = useRef([])
     const [pokemons, setpokemons] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
     if (difficulty.current === 'Easy') {
         numOfCards.current = 5
     } else if (difficulty.current === 'Medium') {
@@ -39,6 +41,7 @@ export default function Cards({ difficulty }) {
             }
             Promise.all(promises.current)
                 .then((res) => {
+                    setIsLoading(false)
                     setpokemons(res)
                 })
                 .catch((err) => {
@@ -51,19 +54,23 @@ export default function Cards({ difficulty }) {
         }
     }, [])
 
-    return (
-        <div className="cards">
-            {pokemons.map((pokemon, index) => {
-                return (
-                    <div className="poke-card" key={index}>
-                        <img
-                            src={pokemon.sprites.front_default}
-                            alt={pokemon.name}
-                        />
-                        <p>{pokemon.name}</p>
-                    </div>
-                )
-            })}
-        </div>
-    )
+    if (isLoading) {
+        return <LoadingSpinner />
+    } else {
+        return (
+            <div className="cards">
+                {pokemons.map((pokemon, index) => {
+                    return (
+                        <div className="poke-card" key={index}>
+                            <img
+                                src={pokemon.sprites.front_default}
+                                alt={pokemon.name}
+                            />
+                            <p>{pokemon.name}</p>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
 }
