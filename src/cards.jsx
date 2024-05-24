@@ -1,7 +1,37 @@
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 
 function LoadingSpinner() {
-    return <p>Loading....</p>
+    const container = useRef()
+    const tl = useRef()
+
+    useGSAP(() => {
+        tl.current = gsap
+            .timeline()
+            .to('.circle-one', { y: -30, background: '#000', duration: 0.15 })
+            .to('.circle-one', { y: 0, background: '#ccc', duration: 0.15 })
+            .to(
+                '.circle-two',
+                { y: -30, background: '#000', duration: 0.15 },
+                '<'
+            )
+            .to('.circle-two', { y: 0, background: '#ccc', duration: 0.15 })
+            .to(
+                '.circle-three',
+                { y: -30, background: '#000', duration: 0.15 },
+                '<'
+            )
+            .to('.circle-three', { y: 0, background: '#ccc', duration: 0.15 })
+    }, [container])
+
+    return (
+        <div ref={container} className="loader-container">
+            <div className="circle circle-one"></div>
+            <div className="circle circle-two"></div>
+            <div className="circle circle-three"></div>
+        </div>
+    )
 }
 
 export default function Cards({ difficulty }) {

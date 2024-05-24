@@ -1,0 +1,19 @@
+.main-body {
+    height: 90vh;
+    display: grid;
+}
+
+.loader-container {
+    align-self: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.loader-container .circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
