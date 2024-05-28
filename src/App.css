@@ -1,6 +1,13 @@
-.main-body {
-    height: 90vh;
+.wrapper .main-body {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.wrapper .main-body .cards {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    justify-items: center;
+    align-items: center;
 }
 
 .loader-container {

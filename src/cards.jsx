@@ -35,17 +35,8 @@ function LoadingSpinner() {
 }
 
 export default function Cards({ difficulty }) {
-    let numOfCards = useRef(0)
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-
-    if (difficulty.current === 'Easy') {
-        numOfCards.current = 5
-    } else if (difficulty.current === 'Medium') {
-        numOfCards.current = 10
-    } else {
-        numOfCards.current = 18
-    }
 
     useEffect(() => {
         let ignore = false
@@ -63,7 +54,15 @@ export default function Cards({ difficulty }) {
         if (!ignore) {
             let promises = []
             const cardIds = new Set()
-            while (cardIds.size !== numOfCards.current) {
+            let numCards = 0
+            if (difficulty.current === 'Easy') {
+                numCards = 6
+            } else if (difficulty.current === 'Medium') {
+                numCards = 12
+            } else {
+                numCards = 18
+            }
+            while (cardIds.size !== numCards) {
                 cardIds.add(Math.floor(Math.random() * 100) + 1)
             }
             for (let id of cardIds) {
@@ -86,6 +85,9 @@ export default function Cards({ difficulty }) {
     if (isLoading) {
         return <LoadingSpinner />
     } else {
+        {
+            console.log(pokemons)
+        }
         return (
             <div className="cards">
                 {pokemons.map((pokemon, index) => {
