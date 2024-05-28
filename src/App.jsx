@@ -18,26 +18,26 @@ function Header({ score, bestScore }) {
 function MainBody() {
     const [showModal, setShowModal] = useState(true)
     const dialogRef = useRef(null)
-    let difficulty = useRef(null)
+    const [difficulty, setDifficulty] = useState('')
 
     function handleClick(e) {
         e.preventDefault()
         switch (e.target.textContent) {
             case 'Easy': {
                 dialogRef.current.close()
-                difficulty.current = 'Easy'
+                setDifficulty('Easy')
                 setShowModal(false)
                 break
             }
             case 'Medium': {
                 dialogRef.current.close()
-                difficulty.current = 'Medium'
+                setDifficulty('Medium')
                 setShowModal(false)
                 break
             }
             case 'Hard': {
                 dialogRef.current.close()
-                difficulty = 'Hard'
+                setDifficulty('Hard')
                 setShowModal(false)
                 break
             }

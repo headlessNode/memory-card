@@ -55,9 +55,9 @@ export default function Cards({ difficulty }) {
             let promises = []
             const cardIds = new Set()
             let numCards = 0
-            if (difficulty.current === 'Easy') {
+            if (difficulty === 'Easy') {
                 numCards = 6
-            } else if (difficulty.current === 'Medium') {
+            } else if (difficulty === 'Medium') {
                 numCards = 12
             } else {
                 numCards = 18
