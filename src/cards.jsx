@@ -38,6 +38,8 @@ export default function Cards({ difficulty }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
+    const pokeCard = useRef(null)
+    const { contextSafe } = useGSAP({ scope: pokeCard })
 
     function handleCardClick(e) {
         let arrCpy = [...selectedPokemons]
@@ -55,6 +57,27 @@ export default function Cards({ difficulty }) {
             }
         }
     }
+
+    const handleMouseEnter = contextSafe((e) => {
+        const card = e.currentTarget.getBoundingClientRect()
+
+        let yRotate = -(e.clientX - card.x - card.width / 2) / 3
+        let xRotate = -(e.clientY - card.y - card.height / 2) / 3
+
+        gsap.to(e.currentTarget, {
+            perspective: '1000',
+            rotateX: xRotate,
+            rotateY: yRotate,
+        })
+    })
+
+    const handleMouseLeave = contextSafe((e) => {
+        gsap.to(e.currentTarget, {
+            perspective: '1000',
+            rotateX: '0deg',
+            rotateY: '0deg',
+        })
+    })
 
     useEffect(() => {
         let ignore = false
@@ -103,17 +126,16 @@ export default function Cards({ difficulty }) {
     if (isLoading) {
         return <LoadingSpinner />
     } else {
-        {
-            console.log(pokemons)
-        }
         return (
-            <div className="cards">
+            <div ref={pokeCard} className="cards">
                 {pokemons.map((pokemon, index) => {
                     return (
                         <button
                             onClick={handleCardClick}
                             className="poke-card"
                             key={index}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             <img
                                 src={pokemon.sprites.front_default}
