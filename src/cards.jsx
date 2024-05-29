@@ -40,6 +40,7 @@ export default function Cards({ difficulty }) {
 
     useEffect(() => {
         let ignore = false
+        console.log('fetching...')
         function getCharacters(id) {
             return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(
                 (res) => {
@@ -51,33 +52,34 @@ export default function Cards({ difficulty }) {
                 }
             )
         }
-        if (!ignore) {
-            let promises = []
-            const cardIds = new Set()
-            let numCards = 0
-            if (difficulty === 'Easy') {
-                numCards = 6
-            } else if (difficulty === 'Medium') {
-                numCards = 12
-            } else {
-                numCards = 18
-            }
-            while (cardIds.size !== numCards) {
-                cardIds.add(Math.floor(Math.random() * 100) + 1)
-            }
-            for (let id of cardIds) {
-                promises.push(getCharacters(id))
-            }
-            Promise.all(promises)
-                .then((res) => {
+        let promises = []
+        const cardIds = new Set()
+        let numCards = 0
+        if (difficulty === 'Easy') {
+            numCards = 6
+        } else if (difficulty === 'Medium') {
+            numCards = 12
+        } else {
+            numCards = 18
+        }
+        while (cardIds.size !== numCards) {
+            cardIds.add(Math.floor(Math.random() * 100) + 1)
+        }
+        for (let id of cardIds) {
+            promises.push(getCharacters(id))
+        }
+        Promise.all(promises)
+            .then((res) => {
+                if (!ignore) {
                     setIsLoading(false)
                     setpokemons(res)
-                })
-                .catch((err) => {
-                    throw new Error(err)
-                })
-        }
+                }
+            })
+            .catch((err) => {
+                throw new Error(err)
+            })
         return () => {
+            console.log('unmount')
             ignore = true
         }
     }, [difficulty])
