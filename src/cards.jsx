@@ -37,10 +37,27 @@ function LoadingSpinner() {
 export default function Cards({ difficulty }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedPokemons, setSelectedPokemons] = useState([])
+
+    function handleCardClick(e) {
+        let arrCpy = [...selectedPokemons]
+        let pokemonSelected = e.currentTarget.textContent
+
+        if (arrCpy.length === 0) {
+            arrCpy.push(pokemonSelected)
+            setSelectedPokemons([...arrCpy])
+        } else {
+            if (!arrCpy.includes(pokemonSelected)) {
+                arrCpy.push(pokemonSelected)
+                setSelectedPokemons([...arrCpy])
+            } else {
+                console.log('already selected')
+            }
+        }
+    }
 
     useEffect(() => {
         let ignore = false
-        console.log('fetching...')
         function getCharacters(id) {
             return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(
                 (res) => {
@@ -79,7 +96,6 @@ export default function Cards({ difficulty }) {
                 throw new Error(err)
             })
         return () => {
-            console.log('unmount')
             ignore = true
         }
     }, [difficulty])
@@ -94,13 +110,17 @@ export default function Cards({ difficulty }) {
             <div className="cards">
                 {pokemons.map((pokemon, index) => {
                     return (
-                        <div className="poke-card" key={index}>
+                        <button
+                            onClick={handleCardClick}
+                            className="poke-card"
+                            key={index}
+                        >
                             <img
                                 src={pokemon.sprites.front_default}
                                 alt={pokemon.name}
                             />
                             <p>{pokemon.name}</p>
-                        </div>
+                        </button>
                     )
                 })}
             </div>

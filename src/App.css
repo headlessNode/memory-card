@@ -6,6 +6,16 @@
 .wrapper .main-body .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.main-body .cards .poke-card {
+    background: #0003;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 20px;
+    display: grid;
     justify-items: center;
     align-items: center;
 }
