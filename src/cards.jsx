@@ -58,22 +58,26 @@ export default function Cards({ difficulty }) {
         }
     }
 
-    const handleMouseEnter = contextSafe((e) => {
+    const handleMouseMove = contextSafe((e) => {
         const card = e.currentTarget.getBoundingClientRect()
 
-        let yRotate = -(e.clientX - card.x - card.width / 2) / 3
-        let xRotate = -(e.clientY - card.y - card.height / 2) / 3
+        let mouseXCoord = e.clientX
+        let mouseYCoord = e.clientY
+
+        const cardHorizontalCenterCoord = card.x - card.width / 2
+        const cardVerticleCenterCoord = card.y - card.height / 2
+
+        let yRotate = (mouseXCoord - cardHorizontalCenterCoord) / 10
+        let xRotate = -(mouseYCoord - cardVerticleCenterCoord) / 10
 
         gsap.to(e.currentTarget, {
-            perspective: '1000',
-            rotateX: xRotate,
-            rotateY: yRotate,
+            rotateX: `${xRotate}deg`,
+            rotateY: `${yRotate}deg`,
         })
     })
 
     const handleMouseLeave = contextSafe((e) => {
         gsap.to(e.currentTarget, {
-            perspective: '1000',
             rotateX: '0deg',
             rotateY: '0deg',
         })
@@ -134,7 +138,7 @@ export default function Cards({ difficulty }) {
                             onClick={handleCardClick}
                             className="poke-card"
                             key={index}
-                            onMouseEnter={handleMouseEnter}
+                            onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
                             <img
