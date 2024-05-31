@@ -7,7 +7,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 40px;
-    perspective: 400px;
 }
 
 .main-body .cards .poke-card {
@@ -20,6 +19,9 @@
     justify-items: center;
     align-items: center;
     will-change: contents;
+    transform: scale3d(1, 1, 1);
+    transform: perspective(1000px);
+    transform-style: preserve-3d;
 }
 
 .loader-container {

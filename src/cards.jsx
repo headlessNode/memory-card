@@ -59,28 +59,48 @@ export default function Cards({ difficulty }) {
     }
 
     const handleMouseMove = contextSafe((e) => {
-        const card = e.currentTarget.getBoundingClientRect()
+        const card = e.currentTarget
+        const cardRect = card.getBoundingClientRect()
 
-        let mouseXCoord = e.clientX
-        let mouseYCoord = e.clientY
+        const mouseX = e.clientX - cardRect.left
+        const mouseY = e.clientY - cardRect.top
 
-        const cardHorizontalCenterCoord = card.x - card.width / 2
-        const cardVerticleCenterCoord = card.y - card.height / 2
+        const cardHorizontalCenter = card.offsetWidth / 2
+        const cardVerticalCenter = card.offsetHeight / 2
 
-        let yRotate = (mouseXCoord - cardHorizontalCenterCoord) / 10
-        let xRotate = -(mouseYCoord - cardVerticleCenterCoord) / 10
+        const rotateX = (cardVerticalCenter - mouseY) / 4
+        const rotateY = (mouseX - cardHorizontalCenter) / 4
 
-        gsap.to(e.currentTarget, {
-            rotateX: `${xRotate}deg`,
-            rotateY: `${yRotate}deg`,
-        })
+        const cardContent = [...e.currentTarget.children]
+
+        gsap.timeline()
+            .to(e.currentTarget, {
+                rotateX: `${rotateX}deg`,
+                rotateY: `${rotateY}deg`,
+            })
+            .to(
+                cardContent,
+                {
+                    translateZ: '15px',
+                },
+                '<'
+            )
     })
 
     const handleMouseLeave = contextSafe((e) => {
-        gsap.to(e.currentTarget, {
-            rotateX: '0deg',
-            rotateY: '0deg',
-        })
+        const cardContent = [...e.currentTarget.children]
+        gsap.timeline()
+            .to(e.currentTarget, {
+                rotateX: '0deg',
+                rotateY: '0deg',
+            })
+            .to(
+                cardContent,
+                {
+                    translateZ: '0px',
+                },
+                '<'
+            )
     })
 
     useEffect(() => {
