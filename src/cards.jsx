@@ -68,8 +68,8 @@ export default function Cards({ difficulty }) {
         const cardHorizontalCenter = card.offsetWidth / 2
         const cardVerticalCenter = card.offsetHeight / 2
 
-        const rotateX = (cardVerticalCenter - mouseY) / 4
-        const rotateY = (mouseX - cardHorizontalCenter) / 4
+        const rotateX = (cardVerticalCenter - mouseY) / 5
+        const rotateY = (mouseX - cardHorizontalCenter) / 5
 
         const cardContent = [...e.currentTarget.children]
 
@@ -166,6 +166,7 @@ export default function Cards({ difficulty }) {
                                 alt={pokemon.name}
                             />
                             <p>{pokemon.name}</p>
+                            <div className="glare"></div>
                         </button>
                     )
                 })}
