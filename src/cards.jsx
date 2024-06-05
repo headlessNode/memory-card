@@ -65,11 +65,32 @@ export default function Cards({ difficulty }) {
         const mouseX = e.clientX - cardRect.left
         const mouseY = e.clientY - cardRect.top
 
+        const xPercentGlare =
+            Math.min(Math.max(mouseX / card.offsetWidth, 0), 1) * 100
+        const yPercentGlare =
+            Math.min(Math.max(mouseY / card.offsetHeight, 0), 1) * 100
+
         const cardHorizontalCenter = card.offsetWidth / 2
         const cardVerticalCenter = card.offsetHeight / 2
 
         const rotateX = (cardVerticalCenter - mouseY) / 5
         const rotateY = (mouseX - cardHorizontalCenter) / 5
+
+        const distanceFromCenter = Math.sqrt(
+            Math.pow(mouseX - cardHorizontalCenter, 2) +
+                Math.pow(mouseY - cardVerticalCenter, 2)
+        )
+        const maxDistance = Math.sqrt(
+            Math.pow(cardHorizontalCenter, 2) + Math.pow(cardVerticalCenter, 2)
+        )
+        const opacity = distanceFromCenter / maxDistance
+
+        const glareAngle =
+            Math.atan2(
+                mouseX - cardHorizontalCenter,
+                mouseY - cardVerticalCenter
+            ) *
+            (180 / Math.PI)
 
         const cardContent = [...e.currentTarget.children]
 
@@ -82,6 +103,14 @@ export default function Cards({ difficulty }) {
                 cardContent,
                 {
                     translateZ: '15px',
+                },
+                '<'
+            )
+            .to(
+                e.currentTarget.lastElementChild.firstElementChild,
+                {
+                    rotate: `${-glareAngle}deg`,
+                    opacity: opacity,
                 },
                 '<'
             )
@@ -98,6 +127,13 @@ export default function Cards({ difficulty }) {
                 cardContent,
                 {
                     translateZ: '0px',
+                },
+                '<'
+            )
+            .to(
+                e.currentTarget.lastElementChild.firstElementChild,
+                {
+                    opacity: 0,
                 },
                 '<'
             )
@@ -166,7 +202,9 @@ export default function Cards({ difficulty }) {
                                 alt={pokemon.name}
                             />
                             <p>{pokemon.name}</p>
-                            <div className="glare"></div>
+                            <div className="glare-wrapper">
+                                <div className="glare"></div>
+                            </div>
                         </button>
                     )
                 })}
