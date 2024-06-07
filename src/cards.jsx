@@ -41,7 +41,15 @@ export default function Cards({ difficulty }) {
     const pokeCard = useRef(null)
     const { contextSafe } = useGSAP({ scope: pokeCard })
 
-    function handleCardClick(e) {
+    const handleCardClick = contextSafe((e) => {
+        // const card = e.currentTarget
+        const cardInner = e.currentTarget.firstElementChild
+
+        gsap.timeline().to(cardInner, {
+            rotateY: '180deg',
+            duration: 0.3,
+        })
+
         let arrCpy = [...selectedPokemons]
         let pokemonSelected = e.currentTarget.textContent
 
@@ -52,11 +60,17 @@ export default function Cards({ difficulty }) {
             if (!arrCpy.includes(pokemonSelected)) {
                 arrCpy.push(pokemonSelected)
                 setSelectedPokemons([...arrCpy])
+                //update score - give one point
+                //rotate cards
+
+                //shuffle pokemons
+                //rotate cards back
             } else {
-                console.log('already selected')
+                //if same card is selected game over
+                //rotate cards
             }
         }
-    }
+    })
 
     const handleMouseMove = contextSafe((e) => {
         const card = e.currentTarget
@@ -86,8 +100,6 @@ export default function Cards({ difficulty }) {
         )
         const opacity = distanceFromCenter / maxDistance
 
-        const cardContent = [...e.currentTarget.children]
-
         const glareElement = e.currentTarget.lastElementChild.firstElementChild
 
         gsap.timeline()
@@ -95,13 +107,6 @@ export default function Cards({ difficulty }) {
                 rotateX: `${rotateX}deg`,
                 rotateY: `${rotateY}deg`,
             })
-            .to(
-                cardContent,
-                {
-                    translateZ: '15px',
-                },
-                '<'
-            )
             .to(
                 glareElement,
                 {
@@ -114,20 +119,12 @@ export default function Cards({ difficulty }) {
     })
 
     const handleMouseLeave = contextSafe((e) => {
-        const cardContent = [...e.currentTarget.children]
         const glareElement = e.currentTarget.lastElementChild.firstElementChild
         gsap.timeline()
             .to(e.currentTarget, {
                 rotateX: '0deg',
                 rotateY: '0deg',
             })
-            .to(
-                cardContent,
-                {
-                    translateZ: '0px',
-                },
-                '<'
-            )
             .to(
                 glareElement,
                 {
@@ -197,11 +194,24 @@ export default function Cards({ difficulty }) {
                             onMouseMove={handleMouseMove}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <img
-                                src={pokemon.sprites.front_default}
-                                alt={pokemon.name}
-                            />
-                            <p>{pokemon.name}</p>
+                            <div className="card-inner">
+                                <div className="front">
+                                    <img
+                                        src={
+                                            pokemon.sprites.other.dream_world
+                                                .front_default
+                                        }
+                                        alt={pokemon.name}
+                                    />
+                                    <p>{pokemon.name}</p>
+                                </div>
+                                <div className="back">
+                                    <img
+                                        src="/card-back.png"
+                                        alt="Pokemon card back"
+                                    />
+                                </div>
+                            </div>
                             <div className="glare-wrapper">
                                 <div className="glare"></div>
                             </div>
