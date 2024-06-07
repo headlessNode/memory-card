@@ -40,8 +40,6 @@ export default function Cards({ difficulty }) {
     const [selectedPokemons, setSelectedPokemons] = useState([])
     const pokeCard = useRef(null)
     const { contextSafe } = useGSAP({ scope: pokeCard })
-    const previousMouseX = useRef(0)
-    const previousMouseY = useRef(0)
 
     function handleCardClick(e) {
         let arrCpy = [...selectedPokemons]
@@ -64,16 +62,33 @@ export default function Cards({ difficulty }) {
         const card = e.currentTarget
         const cardRect = card.getBoundingClientRect()
 
+        //position of mouse inside the card
         const mouseX = e.clientX - cardRect.left
         const mouseY = e.clientY - cardRect.top
-
+        //center of the card
         const cardHorizontalCenter = card.offsetWidth / 2
         const cardVerticalCenter = card.offsetHeight / 2
-
+        //how far is the mouse from the middle
         const rotateX = (cardVerticalCenter - mouseY) / 5
         const rotateY = (mouseX - cardHorizontalCenter) / 5
 
+        const dX = mouseX - cardHorizontalCenter
+        const dY = mouseY - cardVerticalCenter
+
+        const glareAngle = -(Math.atan2(dX, dY) * 180) / Math.PI
+
+        const distanceFromCenter = Math.sqrt(
+            Math.pow(mouseX - cardHorizontalCenter, 2) +
+                Math.pow(mouseY - cardVerticalCenter, 2)
+        )
+        const maxDistance = Math.sqrt(
+            Math.pow(cardHorizontalCenter, 2) + Math.pow(cardVerticalCenter, 2)
+        )
+        const opacity = distanceFromCenter / maxDistance
+
         const cardContent = [...e.currentTarget.children]
+
+        const glareElement = e.currentTarget.lastElementChild.firstElementChild
 
         gsap.timeline()
             .to(e.currentTarget, {
@@ -87,10 +102,20 @@ export default function Cards({ difficulty }) {
                 },
                 '<'
             )
+            .to(
+                glareElement,
+                {
+                    opacity: opacity,
+                },
+                '<'
+            )
+
+        glareElement.style.transform = `rotate(${glareAngle}deg)`
     })
 
     const handleMouseLeave = contextSafe((e) => {
         const cardContent = [...e.currentTarget.children]
+        const glareElement = e.currentTarget.lastElementChild.firstElementChild
         gsap.timeline()
             .to(e.currentTarget, {
                 rotateX: '0deg',
@@ -103,6 +128,15 @@ export default function Cards({ difficulty }) {
                 },
                 '<'
             )
+            .to(
+                glareElement,
+                {
+                    opacity: 0,
+                },
+                '<'
+            )
+
+        glareElement.style.transform = 'rotate(0deg)'
     })
 
     useEffect(() => {
@@ -168,6 +202,9 @@ export default function Cards({ difficulty }) {
                                 alt={pokemon.name}
                             />
                             <p>{pokemon.name}</p>
+                            <div className="glare-wrapper">
+                                <div className="glare"></div>
+                            </div>
                         </button>
                     )
                 })}
