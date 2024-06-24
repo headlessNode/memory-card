@@ -1,6 +1,6 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, forwardRef } from 'react'
 
 function LoadingSpinner() {
     const container = useRef()
@@ -34,13 +34,55 @@ function LoadingSpinner() {
     )
 }
 
+const GameOverDialog = forwardRef(
+    ({ isGameOver, setIsGameOver, score, setScore }, ref) => {
+        function handlePlayAgain() {
+            setIsGameOver(false)
+            setScore(0)
+            const dialog = ref.current
+            dialog.close()
+        }
+
+        function handleQuit() {}
+
+        if (isGameOver) {
+            return (
+                <div className="end-game-dialog">
+                    <dialog ref={ref}>
+                        <div>
+                            <h1>Game Over!</h1>
+                            <p>Your final score is {score}</p>
+                            <ul>
+                                <li>
+                                    <a href="#" onClick={handlePlayAgain}>
+                                        PLAY AGAIN
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onClick={handleQuit}>
+                                        QUIT
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </dialog>
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+)
+
 export default function Cards({ difficulty, score, setScore }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
     const [isFlipping, setIsFlipping] = useState(false)
-    const pokeCard = useRef(null)
-    const { contextSafe } = useGSAP({ scope: pokeCard })
+    const [isGameOver, setIsGameOver] = useState(false)
+    const cardsContainer = useRef(null)
+    const endDialog = useRef(null)
+    const { contextSafe } = useGSAP({ scope: cardsContainer })
 
     const handleCardClick = contextSafe((e) => {
         if (isFlipping) {
@@ -98,8 +140,10 @@ export default function Cards({ difficulty, score, setScore }) {
                                     })
                                 })
                             } else {
-                                //if same card is selected game over
-                                //rotate cards
+                                //if card was already selected
+                                //game over dialog
+                                setIsGameOver(true)
+                                endDialog.current.showModal()
                             }
                         },
                     },
@@ -228,40 +272,49 @@ export default function Cards({ difficulty, score, setScore }) {
         return <LoadingSpinner />
     } else {
         return (
-            <div ref={pokeCard} className="cards">
-                {pokemons.map((pokemon, index) => {
-                    return (
-                        <button
-                            onClick={handleCardClick}
-                            className="poke-card"
-                            key={index}
-                            onMouseMove={handleMouseMove}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            <div className="card-inner">
-                                <div className="front">
-                                    <img
-                                        src={
-                                            pokemon.sprites.other.dream_world
-                                                .front_default
-                                        }
-                                        alt={pokemon.name}
-                                    />
-                                    <p>{pokemon.name}</p>
+            <div>
+                <div ref={cardsContainer} className="cards">
+                    {pokemons.map((pokemon, index) => {
+                        return (
+                            <button
+                                onClick={handleCardClick}
+                                className="poke-card"
+                                key={index}
+                                onMouseMove={handleMouseMove}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                <div className="card-inner">
+                                    <div className="front">
+                                        <img
+                                            src={
+                                                pokemon.sprites.other
+                                                    .dream_world.front_default
+                                            }
+                                            alt={pokemon.name}
+                                        />
+                                        <p>{pokemon.name}</p>
+                                    </div>
+                                    <div className="back">
+                                        <img
+                                            src="/card-back.png"
+                                            alt="Pokemon card back"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="back">
-                                    <img
-                                        src="/card-back.png"
-                                        alt="Pokemon card back"
-                                    />
+                                <div className="glare-wrapper">
+                                    <div className="glare"></div>
                                 </div>
-                            </div>
-                            <div className="glare-wrapper">
-                                <div className="glare"></div>
-                            </div>
-                        </button>
-                    )
-                })}
+                            </button>
+                        )
+                    })}
+                </div>
+                <GameOverDialog
+                    ref={endDialog}
+                    isGameOver={isGameOver}
+                    setIsGameOver={setIsGameOver}
+                    score={score}
+                    setScore={setScore}
+                />
             </div>
         )
     }
