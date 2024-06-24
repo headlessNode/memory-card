@@ -84,6 +84,8 @@ export default function Cards({ difficulty, score, setScore }) {
     const endDialog = useRef(null)
     const { contextSafe } = useGSAP({ scope: cardsContainer })
 
+    function handleGameOver() {}
+
     const handleCardClick = contextSafe((e) => {
         if (isFlipping) {
             return
@@ -143,7 +145,6 @@ export default function Cards({ difficulty, score, setScore }) {
                                 //if card was already selected
                                 //game over dialog
                                 setIsGameOver(true)
-                                endDialog.current.showModal()
                             }
                         },
                     },
@@ -267,6 +268,17 @@ export default function Cards({ difficulty, score, setScore }) {
             ignore = true
         }
     }, [difficulty])
+
+    useEffect(() => {
+        if (isGameOver) {
+            endDialog.current.showModal()
+        }
+        return () => {
+            if (endDialog.current) {
+                endDialog.current.close()
+            }
+        }
+    }, [isGameOver])
 
     if (isLoading) {
         return <LoadingSpinner />
