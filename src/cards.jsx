@@ -38,16 +38,34 @@ export default function Cards({ difficulty }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
+    const [isFlipping, setIsFlipping] = useState(false)
     const pokeCard = useRef(null)
     const { contextSafe } = useGSAP({ scope: pokeCard })
 
     const handleCardClick = contextSafe((e) => {
-        // const card = e.currentTarget
-        const cardInner = e.currentTarget.firstElementChild
+        if (isFlipping) {
+            return
+        }
 
-        gsap.timeline().to(cardInner, {
-            rotateY: '180deg',
-            duration: 0.3,
+        const cardClicked = e.currentTarget
+        const cards = document.querySelectorAll('.poke-card')
+
+        setIsFlipping(true)
+
+        cards.forEach((card) => {
+            gsap.timeline()
+                .to(card, {
+                    rotateX: '0deg',
+                    rotateY: '0deg',
+                })
+                .to(
+                    card,
+                    {
+                        rotateY: '180deg',
+                        duration: 0.5,
+                    },
+                    '-=0.1'
+                )
         })
 
         let arrCpy = [...selectedPokemons]
@@ -73,6 +91,9 @@ export default function Cards({ difficulty }) {
     })
 
     const handleMouseMove = contextSafe((e) => {
+        if (isFlipping) {
+            return
+        }
         const card = e.currentTarget
         const cardRect = card.getBoundingClientRect()
 
@@ -119,6 +140,9 @@ export default function Cards({ difficulty }) {
     })
 
     const handleMouseLeave = contextSafe((e) => {
+        if (isFlipping) {
+            return
+        }
         const glareElement = e.currentTarget.lastElementChild.firstElementChild
         gsap.timeline()
             .to(e.currentTarget, {
