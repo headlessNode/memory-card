@@ -1,90 +1,19 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { useEffect, useRef, useState, forwardRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { LoadingSpinner } from './loadingSpinner'
+import { GameOverDialog } from './gameOver'
 
-function LoadingSpinner() {
-    const container = useRef()
-    const tl = useRef()
-
-    useGSAP(() => {
-        tl.current = gsap
-            .timeline({ repeat: -1 })
-            .to('.circle-one', { y: -30, background: '#000', duration: 0.25 })
-            .to('.circle-one', { y: 0, background: '#ccc', duration: 0.25 })
-            .to(
-                '.circle-two',
-                { y: -30, background: '#000', duration: 0.25 },
-                '<'
-            )
-            .to('.circle-two', { y: 0, background: '#ccc', duration: 0.25 })
-            .to(
-                '.circle-three',
-                { y: -30, background: '#000', duration: 0.25 },
-                '<'
-            )
-            .to('.circle-three', { y: 0, background: '#ccc', duration: 0.25 })
-    }, [container])
-
-    return (
-        <div ref={container} className="loader-container">
-            <div className="circle circle-one"></div>
-            <div className="circle circle-two"></div>
-            <div className="circle circle-three"></div>
-        </div>
-    )
-}
-
-const GameOverDialog = forwardRef(
-    ({ isGameOver, setIsGameOver, score, setScore }, ref) => {
-        function handlePlayAgain() {
-            setIsGameOver(false)
-            setScore(0)
-            const dialog = ref.current
-            dialog.close()
-        }
-
-        function handleQuit() {}
-
-        if (isGameOver) {
-            return (
-                <div className="end-game-dialog">
-                    <dialog ref={ref}>
-                        <div>
-                            <h1>Game Over!</h1>
-                            <p>Your final score is {score}</p>
-                            <ul>
-                                <li>
-                                    <a href="#" onClick={handlePlayAgain}>
-                                        PLAY AGAIN
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handleQuit}>
-                                        QUIT
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </dialog>
-                </div>
-            )
-        } else {
-            return null
-        }
-    }
-)
-
-export default function Cards({ difficulty, score, setScore }) {
+export function Cards({ difficulty, score, setScore }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
     const [isFlipping, setIsFlipping] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
+    const [isGameWon, setIsGameWon] = useState(false)
     const cardsContainer = useRef(null)
     const endDialog = useRef(null)
     const { contextSafe } = useGSAP({ scope: cardsContainer })
-
-    function handleGameOver() {}
 
     const handleCardClick = contextSafe((e) => {
         if (isFlipping) {
@@ -117,31 +46,42 @@ export default function Cards({ difficulty, score, setScore }) {
                                 let currentScore = score
                                 currentScore += 1
                                 setScore(currentScore)
-                                //shuffle the cards
-                                let cpyPokemons = [...pokemons]
-                                //fisher-yates algorithm
-                                //we start from the end to guarantee equal swap chance for last elements
-                                for (
-                                    let i = cpyPokemons.length - 1;
-                                    i > 0;
-                                    i--
-                                ) {
-                                    // i inclusive, j exclusive
-                                    let j = Math.floor(Math.random() * i + 1)
-                                    let temp = cpyPokemons[i]
-                                    cpyPokemons[i] = cpyPokemons[j]
-                                    cpyPokemons[j] = temp
-                                }
-                                setpokemons([...cpyPokemons])
-                                //rotate cards back
-                                cards.forEach((card) => {
-                                    gsap.timeline().to(card, {
-                                        rotateY: '0deg',
-                                        duration: 0.8,
-                                        onComplete: () => setIsFlipping(false),
+                                //check if score is equal to number of cards
+                                if (arrCpy.length == pokemons.length) {
+                                    //game won
+                                    setIsGameWon(true)
+                                } else {
+                                    //shuffle the cards
+                                    let cpyPokemons = [...pokemons]
+                                    //fisher-yates algorithm
+                                    //we start from the end to guarantee equal swap chance for last elements
+                                    for (
+                                        let i = cpyPokemons.length - 1;
+                                        i > 0;
+                                        i--
+                                    ) {
+                                        // i inclusive, j exclusive
+                                        let j = Math.floor(
+                                            Math.random() * i + 1
+                                        )
+                                        let temp = cpyPokemons[i]
+                                        cpyPokemons[i] = cpyPokemons[j]
+                                        cpyPokemons[j] = temp
+                                    }
+                                    setpokemons([...cpyPokemons])
+                                    //rotate cards back
+                                    cards.forEach((card) => {
+                                        gsap.timeline().to(card, {
+                                            rotateY: '0deg',
+                                            duration: 0.8,
+                                            onComplete: () =>
+                                                setIsFlipping(false),
+                                        })
                                     })
-                                })
-                            } else {
+                                }
+                            } else if (
+                                arrCpy.includes(currentSelectedPokemon)
+                            ) {
                                 //if card was already selected
                                 //game over dialog
                                 setIsGameOver(true)
@@ -242,11 +182,11 @@ export default function Cards({ difficulty, score, setScore }) {
         const cardIds = new Set()
         let numCards = 0
         if (difficulty === 'Easy') {
-            numCards = 6
+            numCards = 5
         } else if (difficulty === 'Medium') {
-            numCards = 12
+            numCards = 10
         } else {
-            numCards = 18
+            numCards = 15
         }
         while (cardIds.size !== numCards) {
             cardIds.add(Math.floor(Math.random() * 100) + 1)
@@ -268,7 +208,7 @@ export default function Cards({ difficulty, score, setScore }) {
             ignore = true
         }
     }, [difficulty])
-
+    //for Game Over
     useEffect(() => {
         if (isGameOver) {
             endDialog.current.showModal()
@@ -279,6 +219,17 @@ export default function Cards({ difficulty, score, setScore }) {
             }
         }
     }, [isGameOver])
+    //for Game Win
+    useEffect(() => {
+        if (isGameWon) {
+            endDialog.current.showModal()
+        }
+        return () => {
+            if (endDialog.current) {
+                endDialog.current.close()
+            }
+        }
+    }, [isGameWon])
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -324,6 +275,8 @@ export default function Cards({ difficulty, score, setScore }) {
                     ref={endDialog}
                     isGameOver={isGameOver}
                     setIsGameOver={setIsGameOver}
+                    isGameWon={isGameWon}
+                    setIsGameWon={setIsGameWon}
                     score={score}
                     setScore={setScore}
                 />
@@ -331,3 +284,5 @@ export default function Cards({ difficulty, score, setScore }) {
         )
     }
 }
+
+export default Cards
