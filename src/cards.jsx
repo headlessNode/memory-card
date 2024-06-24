@@ -34,7 +34,7 @@ function LoadingSpinner() {
     )
 }
 
-export default function Cards({ difficulty }) {
+export default function Cards({ difficulty, score, setScore }) {
     const [pokemons, setpokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
@@ -46,10 +46,9 @@ export default function Cards({ difficulty }) {
         if (isFlipping) {
             return
         }
-
-        const cardClicked = e.currentTarget
+        //cards flipping animation
+        let currentSelectedPokemon = e.currentTarget.textContent
         const cards = document.querySelectorAll('.poke-card')
-
         setIsFlipping(true)
 
         cards.forEach((card) => {
@@ -63,34 +62,54 @@ export default function Cards({ difficulty }) {
                     {
                         rotateY: '180deg',
                         duration: 0.5,
+                        onComplete: () => {
+                            //game scoring logic
+                            let arrCpy = [...selectedPokemons]
+
+                            if (!arrCpy.includes(currentSelectedPokemon)) {
+                                arrCpy.push(currentSelectedPokemon)
+                                setSelectedPokemons([...arrCpy])
+                                //update score - give one point
+                                let currentScore = score
+                                currentScore += 1
+                                setScore(currentScore)
+                                //shuffle the cards
+                                let cpyPokemons = [...pokemons]
+                                //fisher-yates algorithm
+                                //we start from the end to guarantee equal swap chance for last elements
+                                for (
+                                    let i = cpyPokemons.length - 1;
+                                    i > 0;
+                                    i--
+                                ) {
+                                    // i inclusive, j exclusive
+                                    let j = Math.floor(Math.random() * i + 1)
+                                    let temp = cpyPokemons[i]
+                                    cpyPokemons[i] = cpyPokemons[j]
+                                    cpyPokemons[j] = temp
+                                }
+                                setpokemons([...cpyPokemons])
+                                //rotate cards back
+                                cards.forEach((card) => {
+                                    gsap.timeline().to(card, {
+                                        rotateY: '0deg',
+                                        duration: 0.8,
+                                        onComplete: () => setIsFlipping(false),
+                                    })
+                                })
+                            } else {
+                                //if same card is selected game over
+                                //rotate cards
+                            }
+                        },
                     },
                     '-=0.1'
                 )
         })
-
-        let arrCpy = [...selectedPokemons]
-        let pokemonSelected = e.currentTarget.textContent
-
-        if (arrCpy.length === 0) {
-            arrCpy.push(pokemonSelected)
-            setSelectedPokemons([...arrCpy])
-        } else {
-            if (!arrCpy.includes(pokemonSelected)) {
-                arrCpy.push(pokemonSelected)
-                setSelectedPokemons([...arrCpy])
-                //update score - give one point
-                //rotate cards
-
-                //shuffle pokemons
-                //rotate cards back
-            } else {
-                //if same card is selected game over
-                //rotate cards
-            }
-        }
     })
 
     const handleMouseMove = contextSafe((e) => {
+        //if cards are flipping this animation wont work
         if (isFlipping) {
             return
         }
@@ -140,6 +159,7 @@ export default function Cards({ difficulty }) {
     })
 
     const handleMouseLeave = contextSafe((e) => {
+        //if cards are flipping this animation wont work
         if (isFlipping) {
             return
         }

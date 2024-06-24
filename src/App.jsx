@@ -15,7 +15,7 @@ function Header({ score, bestScore }) {
     )
 }
 
-function MainBody() {
+function MainBody({ setScore, score }) {
     const [showModal, setShowModal] = useState(true)
     const dialogRef = useRef(null)
     const [difficulty, setDifficulty] = useState('')
@@ -94,7 +94,11 @@ function MainBody() {
     } else {
         return (
             <div className="main-body">
-                <Cards difficulty={difficulty} />
+                <Cards
+                    difficulty={difficulty}
+                    score={score}
+                    setScore={setScore}
+                />
             </div>
         )
     }
@@ -111,7 +115,7 @@ function App() {
     return (
         <div className="wrapper">
             <Header score={score} bestScore={bestScore} />
-            <MainBody />
+            <MainBody score={score} setScore={setScore} />
             <Footer />
         </div>
     )
