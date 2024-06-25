@@ -96,6 +96,7 @@ function MainBody({ setScore, score }) {
             <div className="main-body">
                 <Cards
                     difficulty={difficulty}
+                    setDifficulty={setDifficulty}
                     score={score}
                     setScore={setScore}
                 />

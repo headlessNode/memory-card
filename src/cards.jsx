@@ -4,16 +4,24 @@ import { useEffect, useRef, useState } from 'react'
 import { LoadingSpinner } from './loadingSpinner'
 import { GameOverDialog } from './gameOver'
 
-export function Cards({ difficulty, score, setScore }) {
-    const [pokemons, setpokemons] = useState([])
+export function Cards({ difficulty, score, setScore, setDifficulty }) {
+    const [pokemons, setPokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
     const [isFlipping, setIsFlipping] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
     const [isGameWon, setIsGameWon] = useState(false)
+    const [gameReInit, setGameReInit] = useState(false)
     const cardsContainer = useRef(null)
     const endDialog = useRef(null)
     const { contextSafe } = useGSAP({ scope: cardsContainer })
+
+    // function reInitializeCards(){
+    //     setIsLoading(true);
+    //     setSelectedPokemons([])
+    //     setIsFlipping(false)
+
+    // }
 
     const handleCardClick = contextSafe((e) => {
         if (isFlipping) {
@@ -68,7 +76,7 @@ export function Cards({ difficulty, score, setScore }) {
                                         cpyPokemons[i] = cpyPokemons[j]
                                         cpyPokemons[j] = temp
                                     }
-                                    setpokemons([...cpyPokemons])
+                                    setPokemons([...cpyPokemons])
                                     //rotate cards back
                                     cards.forEach((card) => {
                                         gsap.timeline().to(card, {
@@ -198,7 +206,7 @@ export function Cards({ difficulty, score, setScore }) {
             .then((res) => {
                 if (!ignore) {
                     setIsLoading(false)
-                    setpokemons(res)
+                    setPokemons(res)
                 }
             })
             .catch((err) => {
@@ -207,7 +215,7 @@ export function Cards({ difficulty, score, setScore }) {
         return () => {
             ignore = true
         }
-    }, [difficulty])
+    }, [difficulty, gameReInit])
     //for Game Over
     useEffect(() => {
         if (isGameOver) {
@@ -279,6 +287,14 @@ export function Cards({ difficulty, score, setScore }) {
                     setIsGameWon={setIsGameWon}
                     score={score}
                     setScore={setScore}
+                    difficulty={difficulty}
+                    setDifficulty={setDifficulty}
+                    setIsLoading={setIsLoading}
+                    setIsFlipping={setIsFlipping}
+                    setSelectedPokemons={setSelectedPokemons}
+                    setPokemons={setPokemons}
+                    gameReInit={gameReInit}
+                    setGameReInit={setGameReInit}
                 />
             </div>
         )
