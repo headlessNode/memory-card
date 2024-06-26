@@ -9,6 +9,16 @@
     gap: 40px;
 }
 
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .main-body .cards .poke-card {
     background: #0003;
     border: none;

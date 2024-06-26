@@ -115,6 +115,9 @@ function App() {
 
     return (
         <div className="wrapper">
+            <video className="background-video" autoPlay muted loop>
+                <source src="/background-video.mp4" type="video/mp4" />
+            </video>
             <Header score={score} bestScore={bestScore} />
             <MainBody score={score} setScore={setScore} />
             <Footer />
