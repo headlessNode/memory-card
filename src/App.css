@@ -1,5 +1,93 @@
+@font-face {
+    font-family: pokeFont;
+    src: url(pokemon-solid.ttf);
+}
+
+.wrapper .header .title {
+    font-family: pokeFont, Courier, monospace;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: #ffcc01;
+    -webkit-text-stroke: 3px;
+    -webkit-text-stroke-color: #026cb2;
+}
+
+.wrapper .header .scores {
+    padding: 20px;
+    background: #0003;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: pokeFont, Courier, monospace;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #ffff;
+}
+
 .wrapper .main-body .card-container {
     width: 100%;
+}
+
+.wrapper .main-body dialog {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    border: none;
+    padding: 40px;
+    width: 380px;
+    background: none;
+}
+
+.wrapper .main-body dialog .headline h1 {
+    text-align: center;
+    font-family: pokeFont, Courier, monospace;
+    font-size: 60px;
+    letter-spacing: 3px;
+    color: #ffcc01;
+    -webkit-text-stroke: 5px;
+    -webkit-text-stroke-color: #026cb2;
+}
+
+.wrapper .main-body dialog .headline p {
+    text-align: center;
+    font-family: pokeFont, Courier, monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: #ffcc01;
+    -webkit-text-stroke: 1px;
+    -webkit-text-stroke-color: #026cb2;
+}
+
+.wrapper .main-body dialog .links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.wrapper .main-body dialog .links .github {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper .main-body dialog .links button {
+    border: none;
+    padding: 10px;
+    background: #ffcc01;
+    border-bottom: 2px solid #026cb2;
+    border-right: 2px solid #026cb2;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: pokeFont, Courier, monospace;
+    color: #026cb2;
+    letter-spacing: 3px;
+}
+
+.wrapper .main-body dialog .links button:active {
+    border: none;
 }
 
 .wrapper .main-body .cards {
@@ -8,7 +96,6 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    padding: 32px 0;
 }
 
 .main-body .cards .poke-card {
@@ -100,4 +187,21 @@
     height: 15px;
     border-radius: 50%;
     background-color: #ccc;
+}
+
+.wrapper .footer a {
+    color: #000;
+    text-decoration: none;
+}
+
+.wrapper .footer a:visited {
+    color: #000;
+}
+
+@media (max-width: 520px) {
+    .wrapper .header {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
 }

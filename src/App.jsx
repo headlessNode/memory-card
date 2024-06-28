@@ -2,26 +2,49 @@ import './App.css'
 import { useState, useEffect, useRef } from 'react'
 import Cards from './cards'
 
-function Header({ score, bestScore }) {
+function Header({ score, bestScore, isDialogOpen }) {
+    if (!isDialogOpen) {
+        return (
+            <div className="header">
+                <div className="title">
+                    <h1>PokeCard</h1>
+                </div>
+                <div className="scores">
+                    <div className="score">
+                        <p>Score: {score}</p>
+                    </div>
+                    <div className="best-score">
+                        <p>Best Score: {bestScore}</p>
+                    </div>
+                </div>
+            </div>
+        )
+    } else {
+        return null
+    }
+}
+
+function Footer() {
     return (
-        <div className="header">
-            <div className="score">
-                <p>Score: {score}</p>
-            </div>
-            <div className="best-score">
-                <p>Best Score: {bestScore}</p>
-            </div>
+        <div className="footer">
+            <a
+                href="https://www.github.com/headlessNode/memory-card"
+                target="_blank"
+            >
+                <i className="fa-brands fa-github fa-xl"></i>
+            </a>
         </div>
     )
 }
 
-function MainBody({ setScore, score }) {
+function MainBody({ setScore, score, setIsDialogOpen }) {
     const [showModal, setShowModal] = useState(true)
     const dialogRef = useRef(null)
     const [difficulty, setDifficulty] = useState('')
 
     function handleClick(e) {
         e.preventDefault()
+        setIsDialogOpen(false)
         switch (e.target.textContent) {
             case 'Easy': {
                 dialogRef.current.close()
@@ -58,35 +81,20 @@ function MainBody({ setScore, score }) {
         return (
             <div className="main-body">
                 <dialog ref={dialogRef}>
-                    <div>
-                        <h1>Select difficulty level</h1>
-                        <div className="links">
-                            <ul>
-                                <li>
-                                    <a href="#" onClick={handleClick}>
-                                        Easy
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handleClick}>
-                                        Medium
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handleClick}>
-                                        Hard
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="github">
-                            <a
-                                href="https://github.com/headlessNode/memory-card"
-                                target="_blank"
-                            >
-                                GITHUB
-                            </a>
-                        </div>
+                    <div className="headline">
+                        <h1>PokeCard</h1>
+                        <p>A Memory Card Game</p>
+                    </div>
+                    <div className="links">
+                        <button className="easy" onClick={handleClick}>
+                            Easy
+                        </button>
+                        <button className="medium" onClick={handleClick}>
+                            Medium
+                        </button>
+                        <button className="hard" onClick={handleClick}>
+                            Hard
+                        </button>
                     </div>
                 </dialog>
             </div>
@@ -108,14 +116,24 @@ function MainBody({ setScore, score }) {
 function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
+    const [isDialogOpen, setIsDialogOpen] = useState(true)
 
     return (
         <div className="wrapper">
             <video className="background-video" autoPlay muted loop>
                 <source src="/background-video.mp4" type="video/mp4" />
             </video>
-            <Header score={score} bestScore={bestScore} />
-            <MainBody score={score} setScore={setScore} />
+            <Header
+                score={score}
+                bestScore={bestScore}
+                isDialogOpen={isDialogOpen}
+            />
+            <MainBody
+                score={score}
+                setScore={setScore}
+                setIsDialogOpen={setIsDialogOpen}
+            />
+            <Footer />
         </div>
     )
 }
