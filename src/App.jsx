@@ -105,10 +105,6 @@ function MainBody({ setScore, score }) {
     }
 }
 
-function Footer() {
-    return <div className="footer"></div>
-}
-
 function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
@@ -120,7 +116,6 @@ function App() {
             </video>
             <Header score={score} bestScore={bestScore} />
             <MainBody score={score} setScore={setScore} />
-            <Footer />
         </div>
     )
 }

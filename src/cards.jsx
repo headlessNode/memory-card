@@ -81,7 +81,7 @@ export function Cards({ difficulty, score, setScore, setDifficulty }) {
                                     cards.forEach((card) => {
                                         gsap.timeline().to(card, {
                                             rotateY: '0deg',
-                                            duration: 0.8,
+                                            duration: 1,
                                             onComplete: () =>
                                                 setIsFlipping(false),
                                         })
@@ -243,7 +243,7 @@ export function Cards({ difficulty, score, setScore, setDifficulty }) {
         return <LoadingSpinner />
     } else {
         return (
-            <div>
+            <div className="cards-container">
                 <div ref={cardsContainer} className="cards">
                     {pokemons.map((pokemon, index) => {
                         return (
@@ -257,10 +257,7 @@ export function Cards({ difficulty, score, setScore, setDifficulty }) {
                                 <div className="card-inner">
                                     <div className="front">
                                         <img
-                                            src={
-                                                pokemon.sprites.other
-                                                    .dream_world.front_default
-                                            }
+                                            src={pokemon.sprites.front_default}
                                             alt={pokemon.name}
                                         />
                                         <p>{pokemon.name}</p>

@@ -1,22 +1,14 @@
-.wrapper .main-body {
-    max-width: 1000px;
+.wrapper .main-body .card-container {
     width: 100%;
 }
 
 .wrapper .main-body .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 40px;
-}
-
-.background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 32px 0;
 }
 
 .main-body .cards .poke-card {
@@ -38,21 +30,21 @@
     left: 0;
     width: 100%;
     height: 100%;
+    border-radius: 8px;
     pointer-events: none;
     overflow: hidden;
 }
 
 .main-body .cards .poke-card .glare-wrapper .glare {
     position: absolute;
-    top: 65%;
-    left: 75%;
-    width: 200%;
-    height: 200%;
-    transform-origin: 0% 0%;
+    top: -15%;
+    left: -30%;
+    width: 320px;
+    height: 330px;
     background: linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.8),
-        rgb(255, 255, 255, 0)
+        to top,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0) 100%
     );
     opacity: 0;
 }
