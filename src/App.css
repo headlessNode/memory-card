@@ -29,7 +29,7 @@
     width: 100%;
 }
 
-.wrapper .main-body dialog {
+.wrapper .main-body .start-dialog {
     display: flex;
     gap: 20px;
     flex-direction: column;
@@ -41,7 +41,24 @@
     background: none;
 }
 
-.wrapper .main-body dialog .headline h1 {
+.wrapper .main-body .cards-container .end-game-dialog {
+    background: #e8e9eb;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    border: none;
+    padding: 40px;
+    width: 380px;
+    border-radius: 10px;
+}
+
+.wrapper .main-body .cards-container .end-game-dialog::backdrop {
+    background-color: #0003;
+}
+
+.wrapper .main-body .start-dialog .headline h1 {
     text-align: center;
     font-family: pokeFont, Courier, monospace;
     font-size: 60px;
@@ -51,7 +68,18 @@
     -webkit-text-stroke-color: #026cb2;
 }
 
-.wrapper .main-body dialog .headline p {
+.wrapper .main-body .cards-container .end-game-dialog h1 {
+    text-align: center;
+    font-family: pokeFont, Courier, monospace;
+    font-size: 40px;
+    letter-spacing: 3px;
+    color: #ffcc01;
+    -webkit-text-stroke: 3px;
+    -webkit-text-stroke-color: #026cb2;
+}
+
+.wrapper .main-body .start-dialog .headline p,
+.wrapper .main-body .cards-container .end-game-dialog p {
     text-align: center;
     font-family: pokeFont, Courier, monospace;
     font-size: 24px;
@@ -61,19 +89,20 @@
     -webkit-text-stroke-color: #026cb2;
 }
 
-.wrapper .main-body dialog .links {
+.wrapper .main-body .start-dialog .links {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.wrapper .main-body dialog .links .github {
+.wrapper .main-body .start-dialog .links .github {
     display: flex;
     justify-content: center;
 }
 
-.wrapper .main-body dialog .links button {
+.wrapper .main-body .start-dialog .links button,
+.wrapper .main-body .cards-container .end-game-dialog button {
     border: none;
     padding: 10px;
     background: #ffcc01;
@@ -86,7 +115,8 @@
     letter-spacing: 3px;
 }
 
-.wrapper .main-body dialog .links button:active {
+.wrapper .main-body .start-dialog .links button:active,
+.wrapper .main-body .cards-container .end-game-dialog button:active {
     border: none;
 }
 

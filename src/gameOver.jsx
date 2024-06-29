@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react'
+import { forwardRef } from 'react'
 
 export const GameOverDialog = forwardRef(
     (
@@ -22,7 +22,6 @@ export const GameOverDialog = forwardRef(
     ) => {
         //On keep playing, start the next difficulty cards
         //On keep playing at max difficulty, shuffle at same difficulty
-
         function handleKeepPlaying() {
             //show loading animation
             //remove current cards
@@ -72,58 +71,28 @@ export const GameOverDialog = forwardRef(
             dialog.close()
         }
 
-        function handleQuit() {
-            //maybe rickRoll??
-        }
-
         if (isGameOver) {
             return (
-                <div className="end-game-dialog">
-                    <dialog ref={ref}>
-                        <div>
-                            <h1>Game Over!</h1>
-                            <p>Your final score is {score}</p>
-                            <ul>
-                                <li>
-                                    <a href="#" onClick={handlePlayAgain}>
-                                        PLAY AGAIN
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handleQuit}>
-                                        QUIT
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                <div>
+                    <dialog className="end-game-dialog" ref={ref}>
+                        <h1>Game Over!</h1>
+                        <p>Your final score is {score}</p>
+                        <button onClick={handlePlayAgain}>Play Again</button>
                     </dialog>
                 </div>
             )
         } else if (isGameWon) {
             return (
-                <div className="end-game-dialog">
-                    <dialog ref={ref}>
-                        <div>
-                            <h1>You Won!</h1>
-                            <p>Your final score is {score}</p>
-                            <ul>
-                                <li>
-                                    <a href="#" onClick={handleKeepPlaying}>
-                                        KEEP PLAYING
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handlePlayAgain}>
-                                        PLAY AGAIN
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onClick={handleQuit}>
-                                        QUIT
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                <div>
+                    <dialog className="end-game-dialog" ref={ref}>
+                        <h1>You Won!</h1>
+                        <p>Your final score is {score}</p>
+                        <h1>Game Over!</h1>
+                        <p>Your final score is {score}</p>
+                        <button onClick={handlePlayAgain}>PLAY AGAIN</button>
+                        <button onClick={handleKeepPlaying}>
+                            Keep Playing
+                        </button>
                     </dialog>
                 </div>
             )

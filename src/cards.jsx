@@ -23,13 +23,6 @@ export function Cards({
     const endDialog = useRef(null)
     const { contextSafe } = useGSAP({ scope: cardsContainer })
 
-    // function reInitializeCards(){
-    //     setIsLoading(true);
-    //     setSelectedPokemons([])
-    //     setIsFlipping(false)
-
-    // }
-
     const handleCardClick = contextSafe((e) => {
         if (isFlipping) {
             return
@@ -224,14 +217,14 @@ export function Cards({
         }
     }, [difficulty, gameReInit])
     // handle end of the game
-    const handleEndGame = () => {
+    const handleEndGame = contextSafe((e) => {
         endDialog.current.showModal()
         const prevBestScore = JSON.parse(localStorage.getItem('bestScore'))
         if (score > parseInt(prevBestScore)) {
             setBestScore(score)
             localStorage.setItem('bestScore', JSON.stringify(score))
         }
-    }
+    })
 
     // Effect for Game Over and Game Win
     useEffect(() => {

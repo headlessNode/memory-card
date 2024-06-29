@@ -86,7 +86,7 @@ function MainBody({
     if (showModal) {
         return (
             <div className="main-body">
-                <dialog ref={dialogRef}>
+                <dialog className="start-dialog" ref={dialogRef}>
                     <div className="headline">
                         <h1>PokeCard</h1>
                         <p>A Memory Card Game</p>
