@@ -37,7 +37,13 @@ function Footer() {
     )
 }
 
-function MainBody({ setScore, score, setIsDialogOpen }) {
+function MainBody({
+    setScore,
+    score,
+    setIsDialogOpen,
+    bestScore,
+    setBestScore,
+}) {
     const [showModal, setShowModal] = useState(true)
     const dialogRef = useRef(null)
     const [difficulty, setDifficulty] = useState('')
@@ -107,6 +113,8 @@ function MainBody({ setScore, score, setIsDialogOpen }) {
                     setDifficulty={setDifficulty}
                     score={score}
                     setScore={setScore}
+                    bestScore={bestScore}
+                    setBestScore={setBestScore}
                 />
             </div>
         )
@@ -117,6 +125,15 @@ function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
     const [isDialogOpen, setIsDialogOpen] = useState(true)
+
+    useEffect(() => {
+        if (localStorage.getItem('bestScore') === null) {
+            localStorage.setItem('bestScore', JSON.stringify(bestScore))
+        } else {
+            const prevBestScore = JSON.parse(localStorage.getItem('bestScore'))
+            setBestScore(parseInt(prevBestScore))
+        }
+    }, [])
 
     return (
         <div className="wrapper">
@@ -129,6 +146,8 @@ function App() {
                 score={score}
                 setScore={setScore}
                 setIsDialogOpen={setIsDialogOpen}
+                bestScore={bestScore}
+                setBestScore={setBestScore}
             />
             <Footer />
         </div>

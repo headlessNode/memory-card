@@ -4,7 +4,14 @@ import { useEffect, useRef, useState } from 'react'
 import { LoadingSpinner } from './loadingSpinner'
 import { GameOverDialog } from './gameOver'
 
-export function Cards({ difficulty, score, setScore, setDifficulty }) {
+export function Cards({
+    difficulty,
+    score,
+    setScore,
+    setDifficulty,
+    bestScore,
+    setBestScore,
+}) {
     const [pokemons, setPokemons] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [selectedPokemons, setSelectedPokemons] = useState([])
@@ -216,28 +223,27 @@ export function Cards({ difficulty, score, setScore, setDifficulty }) {
             ignore = true
         }
     }, [difficulty, gameReInit])
-    //for Game Over
+    // handle end of the game
+    const handleEndGame = () => {
+        endDialog.current.showModal()
+        const prevBestScore = JSON.parse(localStorage.getItem('bestScore'))
+        if (score > parseInt(prevBestScore)) {
+            setBestScore(score)
+            localStorage.setItem('bestScore', JSON.stringify(score))
+        }
+    }
+
+    // Effect for Game Over and Game Win
     useEffect(() => {
-        if (isGameOver) {
-            endDialog.current.showModal()
+        if (isGameOver || isGameWon) {
+            handleEndGame()
         }
         return () => {
             if (endDialog.current) {
                 endDialog.current.close()
             }
         }
-    }, [isGameOver])
-    //for Game Win
-    useEffect(() => {
-        if (isGameWon) {
-            endDialog.current.showModal()
-        }
-        return () => {
-            if (endDialog.current) {
-                endDialog.current.close()
-            }
-        }
-    }, [isGameWon])
+    }, [isGameOver, isGameWon])
 
     if (isLoading) {
         return <LoadingSpinner />
