@@ -5,6 +5,7 @@
 }
 
 #root {
+    position: relative;
     display: flex;
     justify-content: center;
 }
