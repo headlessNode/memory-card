@@ -20,9 +20,10 @@
     flex-direction: column;
     gap: 5px;
     font-family: pokeFont, Courier, monospace;
-    font-size: 15px;
+    font-size: clamp(1.5rem, 0.5vw + 1rem, 2rem);
     letter-spacing: 3px;
     color: #ffff;
+    max-width: 300px;
 }
 
 .wrapper .main-body .start-dialog {
@@ -151,9 +152,10 @@
     transform: perspective(1000px);
     transform-style: preserve-3d;
     font-family: pokeFont, Courier, monospace;
+    font-size: clamp(1.5rem, 0.5vw + 1rem, 2rem);
     color: whitesmoke;
     letter-spacing: 4px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 .main-body .cards .poke-card .glare-wrapper {
