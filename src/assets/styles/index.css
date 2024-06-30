@@ -4,12 +4,6 @@
     box-sizing: border-box;
 }
 
-#root {
-    position: relative;
-    display: flex;
-    justify-content: center;
-}
-
 .background-video {
     position: absolute;
     top: 0;
@@ -22,13 +16,14 @@
 
 .wrapper {
     position: relative;
-    max-width: 1500px;
-    width: 100%;
     min-height: 100vh;
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
+    gap: 30px;
 }
 
 .wrapper .header {
@@ -40,6 +35,7 @@
 }
 
 .wrapper .main-body {
+    max-width: 1500px;
     width: 100%;
     min-height: 700px;
     height: 100%;
@@ -48,6 +44,7 @@
 
 .wrapper .footer {
     padding: 20px 40px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
 }

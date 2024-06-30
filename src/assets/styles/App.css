@@ -14,7 +14,7 @@
 
 .wrapper .header .scores {
     padding: 20px;
-    background: #0003;
+    background-color: rgba(54, 69, 79, 0.6);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -23,10 +23,6 @@
     font-size: 15px;
     letter-spacing: 3px;
     color: #ffff;
-}
-
-.wrapper .main-body .card-container {
-    width: 100%;
 }
 
 .wrapper .main-body .start-dialog {
@@ -129,16 +125,20 @@
 }
 
 .main-body .cards .poke-card {
-    background: #0003;
+    background-color: rgba(54, 69, 79, 0.6);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    width: 180px;
+    width: 200px;
     height: 250px;
     display: grid;
     will-change: contents;
     transform: perspective(1000px);
     transform-style: preserve-3d;
+    font-family: pokeFont, Courier, monospace;
+    color: whitesmoke;
+    letter-spacing: 4px;
+    text-transform: uppercase;
 }
 
 .main-body .cards .poke-card .glare-wrapper {
@@ -190,10 +190,6 @@
     vertical-align: middle;
 }
 
-.main-body .cards .poke-card .card-inner .back img {
-    object-fit: contain;
-}
-
 .main-body .cards .poke-card .card-inner .back {
     backface-visibility: hidden;
     transform: rotateY(-180deg);
@@ -202,6 +198,11 @@
     display: grid;
     justify-items: center;
     align-items: center;
+}
+
+.main-body .cards .poke-card .card-inner .back img {
+    width: 200px;
+    height: 250px;
 }
 
 .loader-container {

@@ -1,5 +1,6 @@
 import './assets/styles/App.css'
 import { useState, useEffect, useRef } from 'react'
+import LoadingSpinner from './loadingSpinner'
 import Cards from './cards'
 
 function Header({ score, bestScore, isDialogOpen }) {
@@ -125,6 +126,7 @@ function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
     const [isDialogOpen, setIsDialogOpen] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (localStorage.getItem('bestScore') === null) {
@@ -135,21 +137,45 @@ function App() {
         }
     }, [])
 
+    useEffect(() => {
+        const video = document.createElement('video')
+        video.src = '/background-video.mp4'
+
+        video.onloadeddata = () => {
+            setIsLoading(false)
+        }
+
+        return () => {
+            video.onloadeddata = null
+        }
+    }, [])
+
     return (
         <div className="wrapper">
-            <Header
-                score={score}
-                bestScore={bestScore}
-                isDialogOpen={isDialogOpen}
-            />
-            <MainBody
-                score={score}
-                setScore={setScore}
-                setIsDialogOpen={setIsDialogOpen}
-                bestScore={bestScore}
-                setBestScore={setBestScore}
-            />
-            <Footer />
+            {isLoading ? (
+                <div className="loading-animation">
+                    <LoadingSpinner />
+                </div>
+            ) : (
+                <>
+                    <video autoPlay loop muted className="background-video">
+                        <source src="/background-video.mp4" type="video/mp4" />
+                    </video>
+                    <Header
+                        score={score}
+                        bestScore={bestScore}
+                        isDialogOpen={isDialogOpen}
+                    />
+                    <MainBody
+                        score={score}
+                        setScore={setScore}
+                        setIsDialogOpen={setIsDialogOpen}
+                        bestScore={bestScore}
+                        setBestScore={setBestScore}
+                    />
+                    <Footer />
+                </>
+            )}
         </div>
     )
 }
