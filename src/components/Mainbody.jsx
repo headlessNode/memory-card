@@ -54,8 +54,7 @@ export function MainBody({
             <div className="main-body">
                 <dialog className="start-dialog" ref={dialogRef}>
                     <div className="headline">
-                        <h1>PokeCard</h1>
-                        <p>A Memory Card Game</p>
+                        <img width={'100%'} src="/logo.png" alt="Logo" />
                     </div>
                     <div className="links">
                         <button className="easy" onClick={handleClick}>

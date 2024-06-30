@@ -2,8 +2,8 @@ export function Header({ score, bestScore, isDialogOpen }) {
     if (!isDialogOpen) {
         return (
             <div className="header">
-                <div className="title">
-                    <h1>PokeCard</h1>
+                <div className="logo">
+                    <img width={'250px'} src="/logo.png" alt="Logo" />
                 </div>
                 <div className="scores">
                     <div className="score">

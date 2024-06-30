@@ -1,17 +1,3 @@
-@font-face {
-    font-family: pokeFont;
-    src: url('/pokemon-solid.ttf');
-}
-
-.wrapper .header .title {
-    font-family: pokeFont, Courier, monospace;
-    font-size: 30px;
-    letter-spacing: 4px;
-    color: #ffcc01;
-    -webkit-text-stroke: 3px;
-    -webkit-text-stroke-color: #026cb2;
-}
-
 .wrapper .header .scores {
     padding: 20px;
     background-color: rgba(54, 69, 79, 0.6);
@@ -19,16 +5,12 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(1.5rem, 0.5vw + 1rem, 2rem);
-    letter-spacing: 3px;
     color: #ffff;
     max-width: 300px;
 }
 
 .wrapper .main-body .start-dialog {
     display: flex;
-    gap: 20px;
     flex-direction: column;
     justify-self: center;
     align-self: center;
@@ -60,39 +42,12 @@
     background-color: #0003;
 }
 
-.wrapper .main-body .start-dialog .headline {
-    width: 100%;
-}
-
-.wrapper .main-body .start-dialog .headline h1 {
-    text-align: center;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(4rem, 3vw + 1rem, 6rem);
-    letter-spacing: 3px;
-    color: #ffcc01;
-    -webkit-text-stroke: 4px;
-    -webkit-text-stroke-color: #026cb2;
-}
-
 .wrapper .main-body .cards-container .end-game-dialog h1 {
     text-align: center;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(4rem, 3vw + 1rem, 6rem);
-    letter-spacing: 3px;
-    color: #ffcc01;
-    -webkit-text-stroke: 3px;
-    -webkit-text-stroke-color: #026cb2;
 }
 
-.wrapper .main-body .start-dialog .headline p,
 .wrapper .main-body .cards-container .end-game-dialog p {
     text-align: center;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(2rem, 1.5vw + 0.5rem, 4rem);
-    letter-spacing: 2px;
-    color: #ffcc01;
-    -webkit-text-stroke: 1px;
-    -webkit-text-stroke-color: #026cb2;
 }
 
 .wrapper .main-body .start-dialog .links {
@@ -119,11 +74,7 @@
     border-right: 2px solid #026cb2;
     border-radius: 5px;
     cursor: pointer;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(1rem, 2vw + 1rem, 2.5rem);
-    font-size: 1rem;
     color: #026cb2;
-    letter-spacing: 3px;
     width: 25%;
 }
 
@@ -151,8 +102,6 @@
     will-change: contents;
     transform: perspective(1000px);
     transform-style: preserve-3d;
-    font-family: pokeFont, Courier, monospace;
-    font-size: clamp(1.5rem, 0.5vw + 1rem, 2rem);
     color: whitesmoke;
     letter-spacing: 4px;
     text-transform: capitalize;
