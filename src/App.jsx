@@ -1,16 +1,16 @@
 import './assets/styles/App.css'
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect } from 'react'
 import LoadingSpinner from './components/loadingSpinner'
-
-const BackgroundVideo = lazy(() => import('./components/background'))
-const Header = lazy(() => import('./components//Header'))
-const MainBody = lazy(() => import('./components//Mainbody'))
-const Footer = lazy(() => import('./components//Footer'))
+import BackgroundVideo from './components/background'
+import Header from './components/Header'
+import MainBody from './components/Mainbody'
+import Footer from './components/Footer'
 
 function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
     const [isDialogOpen, setIsDialogOpen] = useState(true)
+    const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false)
 
     useEffect(() => {
         if (localStorage.getItem('bestScore') === null) {
@@ -21,24 +21,32 @@ function App() {
         }
     }, [])
 
+    function handleBackgroundLoad() {
+        setIsBackgroundLoaded(true)
+    }
+
     return (
         <div className="wrapper">
-            <Suspense fallback={<LoadingSpinner />}>
-                <BackgroundVideo />
-                <Header
-                    score={score}
-                    bestScore={bestScore}
-                    isDialogOpen={isDialogOpen}
-                />
-                <MainBody
-                    score={score}
-                    setScore={setScore}
-                    setIsDialogOpen={setIsDialogOpen}
-                    bestScore={bestScore}
-                    setBestScore={setBestScore}
-                />
-                <Footer />
-            </Suspense>
+            <BackgroundVideo onLoad={handleBackgroundLoad} />
+            {isBackgroundLoaded ? (
+                <>
+                    <Header
+                        score={score}
+                        bestScore={bestScore}
+                        isDialogOpen={isDialogOpen}
+                    />
+                    <MainBody
+                        score={score}
+                        setScore={setScore}
+                        setIsDialogOpen={setIsDialogOpen}
+                        bestScore={bestScore}
+                        setBestScore={setBestScore}
+                    />
+                    <Footer />
+                </>
+            ) : (
+                <LoadingSpinner />
+            )}
         </div>
     )
 }

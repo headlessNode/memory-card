@@ -1,11 +1,19 @@
-export const BackgroundVideo = () => {
+import React, { useEffect } from 'react'
+
+const BackgroundVideo = ({ onLoad }) => {
+    useEffect(() => {
+        const video = document.querySelector('.background-video')
+        video.addEventListener('loadeddata', onLoad)
+        return () => {
+            video.removeEventListener('loadeddata', onLoad)
+        }
+    }, [onLoad])
+
     return (
-        <div>
-            <video loop className="background-video">
-                <source src="/background-video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-        </div>
+        <video className="background-video" loop>
+            <source src="/background-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
     )
 }
 
