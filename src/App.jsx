@@ -1,4 +1,4 @@
-import './styles/App.css'
+import './assets/styles/App.css'
 import { useState, useEffect, useRef } from 'react'
 import Cards from './cards'
 
