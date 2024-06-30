@@ -1,6 +1,6 @@
 @font-face {
     font-family: pokeFont;
-    src: url(pokemon-solid.ttf);
+    src: url('pokemon-solid.ttf');
 }
 
 .wrapper .header .title {
