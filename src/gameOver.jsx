@@ -45,6 +45,8 @@ export const GameOverDialog = forwardRef(
             setPokemons([])
             setIsFlipping(false)
             setScore(0)
+            const video = document.querySelector('.background-video')
+            video.play()
             const dialog = ref.current
             dialog.close()
         }
@@ -67,11 +69,15 @@ export const GameOverDialog = forwardRef(
             setPokemons([])
             setIsFlipping(false)
             setScore(0)
+            const video = document.querySelector('.background-video')
+            video.play()
             const dialog = ref.current
             dialog.close()
         }
 
         if (isGameOver) {
+            const video = document.querySelector('.background-video')
+            video.pause()
             return (
                 <div>
                     <dialog className="end-game-dialog" ref={ref}>
@@ -82,6 +88,8 @@ export const GameOverDialog = forwardRef(
                 </div>
             )
         } else if (isGameWon) {
+            const video = document.querySelector('.background-video')
+            video.pause()
             return (
                 <div>
                     <dialog className="end-game-dialog" ref={ref}>

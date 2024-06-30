@@ -1,6 +1,5 @@
 import './assets/styles/App.css'
 import { useState, useEffect, useRef } from 'react'
-import LoadingSpinner from './loadingSpinner'
 import Cards from './cards'
 
 function Header({ score, bestScore, isDialogOpen }) {
@@ -51,6 +50,8 @@ function MainBody({
 
     function handleClick(e) {
         e.preventDefault()
+        const video = document.querySelector('.background-video')
+        video.play()
         setIsDialogOpen(false)
         switch (e.target.textContent) {
             case 'Easy': {
@@ -126,7 +127,6 @@ function App() {
     const [score, setScore] = useState(0)
     const [bestScore, setBestScore] = useState(0)
     const [isDialogOpen, setIsDialogOpen] = useState(true)
-    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (localStorage.getItem('bestScore') === null) {
@@ -137,51 +137,24 @@ function App() {
         }
     }, [])
 
-    useEffect(() => {
-        const video = document.createElement('video')
-        video.src = '/background-video.mp4'
-
-        video.onloadeddata = () => {
-            setIsLoading(false)
-        }
-
-        return () => {
-            video.onloadeddata = null
-        }
-    }, [])
-
     return (
         <div className="wrapper">
-            {isLoading ? (
-                <div className="loading-animation">
-                    <LoadingSpinner />
-                </div>
-            ) : (
-                <>
-                    <video
-                        preload="auto"
-                        autoPlay
-                        loop
-                        muted
-                        className="background-video"
-                    >
-                        <source src="/background-video.mp4" type="video/mp4" />
-                    </video>
-                    <Header
-                        score={score}
-                        bestScore={bestScore}
-                        isDialogOpen={isDialogOpen}
-                    />
-                    <MainBody
-                        score={score}
-                        setScore={setScore}
-                        setIsDialogOpen={setIsDialogOpen}
-                        bestScore={bestScore}
-                        setBestScore={setBestScore}
-                    />
-                    <Footer />
-                </>
-            )}
+            <video loop className="background-video">
+                <source src="/background-video.mp4" type="video/mp4" />
+            </video>
+            <Header
+                score={score}
+                bestScore={bestScore}
+                isDialogOpen={isDialogOpen}
+            />
+            <MainBody
+                score={score}
+                setScore={setScore}
+                setIsDialogOpen={setIsDialogOpen}
+                bestScore={bestScore}
+                setBestScore={setBestScore}
+            />
+            <Footer />
         </div>
     )
 }

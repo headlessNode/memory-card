@@ -5,8 +5,8 @@
 
 .wrapper .header .title {
     font-family: pokeFont, Courier, monospace;
-    font-size: 20px;
-    letter-spacing: 3px;
+    font-size: 30px;
+    letter-spacing: 4px;
     color: #ffcc01;
     -webkit-text-stroke: 3px;
     -webkit-text-stroke-color: #026cb2;
@@ -31,9 +31,11 @@
     flex-direction: column;
     justify-self: center;
     align-self: center;
+    justify-content: center;
+    align-items: center;
     border: none;
     padding: 40px;
-    width: 380px;
+    width: max-content;
     background: none;
 }
 
@@ -44,14 +46,20 @@
     flex-direction: column;
     justify-self: center;
     align-self: center;
-    border: none;
+    justify-content: center;
+    align-items: center;
     padding: 40px;
-    width: 380px;
+    border: none;
+    width: max-content;
     border-radius: 10px;
 }
 
 .wrapper .main-body .cards-container .end-game-dialog::backdrop {
     background-color: #0003;
+}
+
+.wrapper .main-body .start-dialog .headline {
+    padding: 40px 40px 0 40px;
 }
 
 .wrapper .main-body .start-dialog .headline h1 {
@@ -60,7 +68,7 @@
     font-size: 60px;
     letter-spacing: 3px;
     color: #ffcc01;
-    -webkit-text-stroke: 5px;
+    -webkit-text-stroke: 4px;
     -webkit-text-stroke-color: #026cb2;
 }
 
