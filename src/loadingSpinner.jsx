@@ -12,34 +12,28 @@ export function LoadingSpinner() {
             .to('.pokeball', {
                 x: -10,
                 rotate: -20,
-                duration: 0.2,
-                ease: 'bounce.out',
+                duration: 0.3,
+                ease: 'none',
             })
             .to('.pokeball', {
                 x: 10,
                 rotate: 20,
-                duration: 0.1,
-                ease: 'bounce.out',
+                duration: 0.2,
+                ease: 'none',
             })
-            .to('.pokeball', { y: -40, duration: 0.3, ease: 'bounce.out' }) // Jump up
-            .to('.pokeball', { y: 0, duration: 0.2, ease: 'bounce.out' }) // Fall down
+            .to('.pokeball', { y: -40, duration: 0.3, ease: 'none' }) // Jump up
+            .to('.pokeball', { y: 0, duration: 0.3, ease: 'none' }) // Fall down
             .to('.pokeball', {
                 x: -10,
                 rotate: -10,
-                duration: 0.2,
-                ease: 'bounce.out',
+                duration: 0.3,
+                ease: 'none',
             })
             .to('.pokeball', {
                 x: 10,
                 rotate: 10,
-                duration: 0.1,
-                ease: 'bounce.out',
-            })
-            .to('.pokeball', {
-                x: 0,
-                rotate: 0,
-                duration: 0.1,
-                ease: 'bounce.out',
+                duration: 0.2,
+                ease: 'none',
             })
     }, [container])
 
