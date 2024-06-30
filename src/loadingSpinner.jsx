@@ -9,27 +9,18 @@ export function LoadingSpinner() {
     useGSAP(() => {
         tl.current = gsap
             .timeline({ repeat: -1 })
-            .to('.circle-one', { y: -30, background: '#000', duration: 0.25 })
-            .to('.circle-one', { y: 0, background: '#ccc', duration: 0.25 })
-            .to(
-                '.circle-two',
-                { y: -30, background: '#000', duration: 0.25 },
-                '<'
-            )
-            .to('.circle-two', { y: 0, background: '#ccc', duration: 0.25 })
-            .to(
-                '.circle-three',
-                { y: -30, background: '#000', duration: 0.25 },
-                '<'
-            )
-            .to('.circle-three', { y: 0, background: '#ccc', duration: 0.25 })
+            .to('.pokeball', { x: -10, rotate: -20, duration: 0.2 })
+            .to('.pokeball', { x: 10, rotate: 20, duration: 0.1 })
+            .to('.pokeball', { y: -40, duration: 0.3 }) // Jump up
+            .to('.pokeball', { y: 0, duration: 0.2 }) // Fall down
+            .to('.pokeball', { x: -10, rotate: -10, duration: 0.2 })
+            .to('.pokeball', { x: 10, rotate: 10, duration: 0.1 })
+            .to('.pokeball', { x: 0, rotate: 0, duration: 0.1 })
     }, [container])
 
     return (
         <div ref={container} className="loader-container">
-            <div className="circle circle-one"></div>
-            <div className="circle circle-two"></div>
-            <div className="circle circle-three"></div>
+            <div className="pokeball"></div>
         </div>
     )
 }
