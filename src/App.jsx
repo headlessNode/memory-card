@@ -1,127 +1,11 @@
 import './assets/styles/App.css'
-import { useState, useEffect, useRef } from 'react'
-import Cards from './cards'
+import { useState, useEffect, Suspense, lazy } from 'react'
+import LoadingSpinner from './components/loadingSpinner'
 
-function Header({ score, bestScore, isDialogOpen }) {
-    if (!isDialogOpen) {
-        return (
-            <div className="header">
-                <div className="title">
-                    <h1>PokeCard</h1>
-                </div>
-                <div className="scores">
-                    <div className="score">
-                        <p>Score: {score}</p>
-                    </div>
-                    <div className="best-score">
-                        <p>Best Score: {bestScore}</p>
-                    </div>
-                </div>
-            </div>
-        )
-    } else {
-        return null
-    }
-}
-
-function Footer() {
-    return (
-        <div className="footer">
-            <a
-                href="https://www.github.com/headlessNode/memory-card"
-                target="_blank"
-            >
-                <i className="fa-brands fa-github fa-xl"></i>
-            </a>
-        </div>
-    )
-}
-
-function MainBody({
-    setScore,
-    score,
-    setIsDialogOpen,
-    bestScore,
-    setBestScore,
-}) {
-    const [showModal, setShowModal] = useState(true)
-    const dialogRef = useRef(null)
-    const [difficulty, setDifficulty] = useState('')
-
-    function handleClick(e) {
-        e.preventDefault()
-        const video = document.querySelector('.background-video')
-        video.play()
-        setIsDialogOpen(false)
-        switch (e.target.textContent) {
-            case 'Easy': {
-                dialogRef.current.close()
-                setDifficulty('Easy')
-                setShowModal(false)
-                break
-            }
-            case 'Medium': {
-                dialogRef.current.close()
-                setDifficulty('Medium')
-                setShowModal(false)
-                break
-            }
-            case 'Hard': {
-                dialogRef.current.close()
-                setDifficulty('Hard')
-                setShowModal(false)
-                break
-            }
-        }
-    }
-
-    useEffect(() => {
-        const dialog = dialogRef.current
-        dialog.showModal()
-        return () => {
-            if (dialog.open) {
-                dialog.close()
-            }
-        }
-    }, [])
-
-    if (showModal) {
-        return (
-            <div className="main-body">
-                <dialog className="start-dialog" ref={dialogRef}>
-                    <div className="headline">
-                        <h1>PokeCard</h1>
-                        <p>A Memory Card Game</p>
-                    </div>
-                    <div className="links">
-                        <button className="easy" onClick={handleClick}>
-                            Easy
-                        </button>
-                        <button className="medium" onClick={handleClick}>
-                            Medium
-                        </button>
-                        <button className="hard" onClick={handleClick}>
-                            Hard
-                        </button>
-                    </div>
-                </dialog>
-            </div>
-        )
-    } else {
-        return (
-            <div className="main-body">
-                <Cards
-                    difficulty={difficulty}
-                    setDifficulty={setDifficulty}
-                    score={score}
-                    setScore={setScore}
-                    bestScore={bestScore}
-                    setBestScore={setBestScore}
-                />
-            </div>
-        )
-    }
-}
+const BackgroundVideo = lazy(() => import('./components/background'))
+const Header = lazy(() => import('./components//Header'))
+const MainBody = lazy(() => import('./components//Mainbody'))
+const Footer = lazy(() => import('./components//Footer'))
 
 function App() {
     const [score, setScore] = useState(0)
@@ -139,22 +23,22 @@ function App() {
 
     return (
         <div className="wrapper">
-            <video loop className="background-video">
-                <source src="/background-video.mp4" type="video/mp4" />
-            </video>
-            <Header
-                score={score}
-                bestScore={bestScore}
-                isDialogOpen={isDialogOpen}
-            />
-            <MainBody
-                score={score}
-                setScore={setScore}
-                setIsDialogOpen={setIsDialogOpen}
-                bestScore={bestScore}
-                setBestScore={setBestScore}
-            />
-            <Footer />
+            <Suspense fallback={<LoadingSpinner />}>
+                <BackgroundVideo />
+                <Header
+                    score={score}
+                    bestScore={bestScore}
+                    isDialogOpen={isDialogOpen}
+                />
+                <MainBody
+                    score={score}
+                    setScore={setScore}
+                    setIsDialogOpen={setIsDialogOpen}
+                    bestScore={bestScore}
+                    setBestScore={setBestScore}
+                />
+                <Footer />
+            </Suspense>
         </div>
     )
 }
